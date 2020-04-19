@@ -1,15 +1,13 @@
-def main(N, M, A):
-    memo = N - sum(A)
-    if memo >= 0:
-        return memo
-    else:
-        return -1
+import collections
+
+def main(N, A):
+    c = collections.Counter(A)
+    [print(c[i+1]) for i in range(max(c.keys()))]
+    [print(0) for i in range(max(c.keys()), N)]
 
 if __name__ == '__main__':
-    N, M = list(map(int, input().split()))
+    N = int(input())
     A = list(map(int, input().split()))
-    # N = 314
-    # M = 15
-    # A = list(map(int, "9 26 5 35 8 9 79 3 23 8 46 2 6 43 3".split()))
-    # print(N, M, A)
-    print(main(N, M, A))
+    # N = 7
+    # A = list(map(int, "1 2 3 4 5 6".split()))
+    main(N, A)
