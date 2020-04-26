@@ -1,11 +1,11 @@
-def main(N, K):
-    def sumN(x):
-        return int(x * (x + 1) * 0.5)
-    ans = sum([sumN(N) - sumN(N - k) - sumN(k - 1) + 1 for k in range(K, N + 2)])
-    print(ans%(10**9+7))
+def main(S, W):
+    if S > W:
+        print('safe')
+    else:
+        print('unsafe')
 
 
 
 if __name__ == '__main__':
-    N, K = list(map(int, input().split()))
-    main(N, K)
+    S, W = list(map(int, input().split()))
+    main(S, W)
