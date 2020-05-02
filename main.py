@@ -1,10 +1,13 @@
-def main(N, S):
-    print(len(set(S)))
+def main(K, A, B):
+    a = int(A / K)
+    b = int(B / K)
+    if A == 0 or (a == b and A % K != 0):
+        print('NG')
+    else:
+        print('OK')
 
 
 if __name__ == '__main__':
-    S = []
-    N = int(input())
-    for i in range(N):
-        S.append(input())
-    main(N, S)
+    K = int(input())
+    A, B = list(map(int, input().split()))
+    main(K, A, B)
