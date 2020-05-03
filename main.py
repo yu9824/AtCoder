@@ -1,10 +1,10 @@
-import math
-
-def main(A, B, N):
-    x = min(B-1, N)
-    answer = math.floor(A * x / B) - A * math.floor(x / B)
-    print(answer)
+def main(S):
+    lst = ['ABC', 'ARC']
+    if S == lst[0]:
+        print(lst[1])
+    else:
+        print(lst[0])
 
 if __name__ == '__main__':
-    A, B, N = list(map(int, input().split()))
-    main(A, B, N)
+    S = input()
+    main(S)
