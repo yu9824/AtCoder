@@ -1,10 +1,12 @@
-def main(S):
-    lst = ['ABC', 'ARC']
-    if S == lst[0]:
-        print(lst[1])
-    else:
-        print(lst[0])
+def main(N, K, d, A):
+    a = list(set(sum(A, [])))
+    print(N - len(a))
 
 if __name__ == '__main__':
-    S = input()
-    main(S)
+    N, K = list(map(int, input().split()))
+    d = []
+    A = []
+    for i in range(K):
+        d.append(int(input()))
+        A.append(list(map(int, input().split())))
+    main(N, K, d, A)
