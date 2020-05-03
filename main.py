@@ -1,16 +1,23 @@
-def main(N, M, H, AB):
-    bad = []
-    for A, B in AB:
-        if H[A - 1] >= H[B - 1]: #pythonは一個ずれる
-            bad.append(B)
-        if H[B - 1] >= H[A - 1]:
-            bad.append(A)
-    print(N - len(list(set(bad))))
+import math
+
+def main(X):
+    lst = f(X)
+    for L in lst:
+        for l in L:
+            for B in range(-120, 120, 1):
+                A = B + l[0]
+                if g(A, B):
+                    print(A, B)
+                    exit()
+
+def f(X):
+    return [[[X // i, i], [i, X // i]] for i in range(1, math.floor(X ** 0.5) + 1) if X % i == 0]
+
+def g(A, B):
+    return A ** 5 - B ** 5 == X
+
+
 
 if __name__ == '__main__':
-    N, M = list(map(int, input().split()))
-    H = list(map(int, input().split()))
-    AB = []
-    for i in range(M):
-        AB.append(list(map(int, input().split())))
-    main(N, M, H, AB)
+    X = int(input())
+    main(X)
