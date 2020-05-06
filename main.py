@@ -1,9 +1,12 @@
-N, M = list(map(int, input().split()))
-disk = [int(input()) for _ in range(M)]
+def main(b, a):
+    dict_change = {str(x):str(i) for i, x in enumerate(b)}
+    dict_reverse = {str(i):str(x) for i, x in enumerate(b)}
+    A = list(map(str, sorted([int(j.translate(str.maketrans(dict_change))) for i, j in enumerate(a)])))
+    [print(int(j.translate(str.maketrans(dict_reverse)))) for i, j in enumerate(A)]
 
-CD = [i for i in range(N + 1)]  # それぞれのdiskに入ってるCDの番号 0に入ってる = CDプレイヤーに入ってる
 
-for i in disk:  #次聞くやつ
-    l = CD.index(i)
-    CD[0], CD[l] = CD[l], CD[0]
-[print(CD[i + 1]) for i in range(N)]
+if __name__ == '__main__':
+    b = list(map(int, input().split()))
+    N = int(input())
+    a = [input() for _ in range(N)]
+    main(b, a)
