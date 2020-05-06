@@ -1,10 +1,14 @@
-import collections
+def main(N, P):
+    maximum = 0
+    for i in range(N):
+        for j in range(i, N):
+            maximum = max(maximum, d(P[i], P[j]))
+    print('{:.04f}'.format(maximum))
 
-def main(N, c):
-    counta = [c.count(str(i + 1)) for i in range(4)]
-    print(max(counta), min(counta))
+def d(p, q):
+    return ((p[0] - q[0]) ** 2 + (p[1] - q[1]) ** 2) ** 0.5
 
 if __name__ == '__main__':
     N = int(input())
-    c = list(input())
-    main(N, c)
+    P = [list(map(int, input().split())) for _ in range(N)]
+    main(N, P)
