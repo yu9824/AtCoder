@@ -2,13 +2,14 @@
 # int(input())
 
 
-def main(S, T):
-    if S == T[:-1]:
-        print('Yes')
+def main(A, B, C, K):
+    if K - A <= 0:
+        print(K)
+    elif K - A > 0 and K - A - B <= 0:
+        print(A)
     else:
-        print('No')
+        print(A - (K - A - B))
 
 if __name__ == '__main__':
-    S = input()
-    T = input()
-    main(S, T)
+    A, B, C, K = list(map(int, input().split()))
+    main(A, B, C, K)
