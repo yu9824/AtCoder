@@ -1,33 +1,32 @@
 # list(map(int, input().split()))
 # int(input())
 
-def main(N, s):
-    # 0から9の鋳型を作成
-    t = list('.###..#..###.###.#.#.###.###.###.###.###.')
-    u = [[t[4*n+1:4*n+4]] for n in range(10)]
-    lst = [list('.#.#.##....#...#.#.#.#...#.....#.#.#.#.#.'), list('.#.#..#..###.###.###.###.###...#.###.###.'), list('.#.#..#..#.....#...#...#.#.#...#.#.#...#.'), list('.###.###.###.###...#.###.###...#.###.###.')]
-    for t in lst:
-        for n in range(10):
-            u[n].append(t[4*n+1:4*n+4])
-
-
-    print(''.join([str(u.index(x)) for x in s]))
-
-
-
-
-
+def main(N, M, Q, rinsetu, c):
+    s = []
+    for _ in range(Q):
+        t = list(map(int, input().split()))
+        if t[0] == 1:   # クエリ1(スプリンクラー起動)の場合
+            x = t[1]
+            # x番目のスプリンクラーの現在の色を出力
+            print(c[x - 1])
+            # x番目のスプリンクラーの色で隣接スプリンクラーの色を上塗り
+            for r in rinsetu[x - 1]:
+                c[r] = c[x - 1]
+        else:   # クエリ2(色を上塗り)の場合
+            x, y = t[1:]
+            # x番目のスプリンクラーの現在の色を出力
+            print(c[x - 1])
+            # x番目のスプリンクラーの色を色yで上塗り
+            c[x - 1] = y
 
 
 
 if __name__ == '__main__':
-    N = int(input())
-    for i in range(5):
-        t = list(input())
-        if i == 0:
-            s = [[t[4*n+1:4*n+4]] for n in range(N)]
-        else:
-            for n in range(N):
-                s[n].append(t[4*n+1:4*n+4])
-
-    main(N, s)
+    N, M, Q = list(map(int, input().split()))
+    rinsetu = [[] for _ in range(N)]
+    for _ in range(M):
+        u, v = list(map(int, input().split()))
+        rinsetu[u - 1].append(v - 1)
+        rinsetu[v - 1].append(u - 1)
+    c = list(map(int, input().split()))
+    main(N, M, Q, rinsetu, c)
