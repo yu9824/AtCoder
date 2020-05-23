@@ -1,26 +1,33 @@
 # list(map(int, input().split()))
 # int(input())
-import numpy as np
 
-def main(N, M, Q):
-    # 正解その問題の配点
-    haiten = np.ones(M, dtype = int) * N
+def main(N, s):
+    # 0から9の鋳型を作成
+    t = list('.###..#..###.###.#.#.###.###.###.###.###.')
+    u = [[t[4*n+1:4*n+4]] for n in range(10)]
+    lst = [list('.#.#.##....#...#.#.#.#...#.....#.#.#.#.#.'), list('.#.#..#..###.###.###.###.###...#.###.###.'), list('.#.#..#..#.....#...#...#.#.#...#.#.#...#.'), list('.###.###.###.###...#.###.###...#.###.###.')]
+    for t in lst:
+        for n in range(10):
+            u[n].append(t[4*n+1:4*n+4])
 
-    # 正解したかどうかの行列
-    array = np.zeros([N, M], dtype = int)
 
-    for _ in range(Q):
-        s = list(map(int, input().split()))
-        if s[0] == 2:
-            n = s[1]
-            m = s[2]
-            array[n - 1][m - 1] = 1
-            haiten[m - 1] -= 1
-        else:
-            n = s[1]
-            print(array[n - 1] @ haiten)
+    print(''.join([str(u.index(x)) for x in s]))
+
+
+
+
+
+
 
 
 if __name__ == '__main__':
-    N, M, Q = list(map(int, input().split()))
-    main(N, M, Q)
+    N = int(input())
+    for i in range(5):
+        t = list(input())
+        if i == 0:
+            s = [[t[4*n+1:4*n+4]] for n in range(N)]
+        else:
+            for n in range(N):
+                s[n].append(t[4*n+1:4*n+4])
+
+    main(N, s)
