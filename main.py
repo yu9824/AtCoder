@@ -1,13 +1,21 @@
 # list(map(int, input().split()))
 # int(input())
 
-def main():
-    H1, M1, H2, M2, K = list(map(int, input().split()))
-    t1 = H1 * 60 + M1
-    t2 = H2 * 60 + M2
-    print(t2 - t1 - K)
-
+def main(T):
+    ans = list(T)
+    for i, s in enumerate(T):
+        if s == '?':
+            ans[i] = 'D'
+    print(''.join(ans))
+    # for i, s in enumerate(T):
+    #     if s == '?':
+    #         if T[i+1] != 'P':
+    #             ans[i] = 'P'
+    #         else:
+    #             ans[i] = 'D'
+    # print(''.join(ans))
 
 
 if __name__ == '__main__':
-    main()
+    T = input()
+    main(T)
