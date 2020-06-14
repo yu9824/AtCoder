@@ -2,14 +2,23 @@
 # int(input())
 
 
-def main(X, Y):
-    cand = Y // 4
-    for i in range(cand, -1, -1):
-        if i * 4 + (X - i) * 2 == Y:
-            print('Yes')
-            exit()
+def main(X, N, P):
+    st = set(P)
+    if N == 0:
+        print(X)
     else:
-        print('No')
+        n = 0
+        while True:
+            if X - n not in st:
+                print(X - n)
+                exit()
+            elif X + n not in st:
+                print(X + n)
+                exit()
+            else:
+                n += 1
+
 if __name__ == '__main__':
-    X, Y = list(map(int, input().split()))
-    main(X, Y)
+    X, N = list(map(int, input().split()))
+    P = list(map(int, input().split()))
+    main(X, N, P)
