@@ -1,15 +1,15 @@
 # list(map(int, input().split()))
 # int(input())
-import numpy as np
-from numba import njit
 
 
-def main():
-    lst = list(map(int, input().split()))
-    for i, l in enumerate(lst):
-        if l == 0:
-            print(i + 1)
+def main(X, Y):
+    cand = Y // 4
+    for i in range(cand, -1, -1):
+        if i * 4 + (X - i) * 2 == Y:
+            print('Yes')
             exit()
-
+    else:
+        print('No')
 if __name__ == '__main__':
-    main()
+    X, Y = list(map(int, input().split()))
+    main(X, Y)
