@@ -2,9 +2,10 @@
 # int(input())
 
 def main(S, T):
+    ans = 0
     for s, t in zip(S, T):
-        print(s, t)
-
+        ans += s != t
+    print(ans)
 
 
 if __name__ == '__main__':
