@@ -1,12 +1,13 @@
 # list(map(int, input().split()))
 # int(input())
 
-def main():
-    N, K = list(map(int, input().split()))
-    P = list(map(int, input().split()))
+def main(S, T):
+    for s, t in zip(S, T):
+        print(s, t)
 
-    P.sort()
-    print(sum(P[:K]))
+
 
 if __name__ == '__main__':
-    main()
+    S = list(input())
+    T = list(input())
+    main(S, T)
