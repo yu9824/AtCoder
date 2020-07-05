@@ -1,14 +1,10 @@
 # list(map(int, input().split()))
 # int(input())
 
-def main(S, T):
-    ans = 0
-    for s, t in zip(S, T):
-        ans += s != t
-    print(ans)
-
+def main():
+    N = int(input())
+    amari = N % 1000 if N % 1000 else 1000
+    print(1000 - amari)
 
 if __name__ == '__main__':
-    S = list(input())
-    T = list(input())
-    main(S, T)
+    main()
