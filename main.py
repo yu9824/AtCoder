@@ -2,9 +2,12 @@
 # int(input())
 
 def main():
-    N = int(input())
-    amari = N % 1000 if N % 1000 else 1000
-    print(1000 - amari)
+    pass
+
 
 if __name__ == '__main__':
-    main()
+    H, W, K = list(map(int, input().split()))
+    HW = []
+    for h in range(H):
+        HW.append(list(input()))
+    print(HW)
