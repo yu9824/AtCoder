@@ -1,15 +1,15 @@
 # list(map(int, input().split()))
 # int(input())
 
-def main():
-    L, R, d = list(map(int, input().split()))
-
+def main(N, A):
     ans = 0
-    for i in range(L, R+1):
-        if i % d == 0:
+    for n in range(1, N+1, 2):
+        if A[n-1] % 2 == 1:
             ans += 1
     print(ans)
 
 
 if __name__ == '__main__':
-    main()
+    N = int(input())
+    A = list(map(int, input().split()))
+    main(N, A)
