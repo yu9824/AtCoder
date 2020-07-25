@@ -1,22 +1,19 @@
 # list(map(int, input().split()))
 # int(input())
-from itertools import combinations_with_replacement
-import copy
 
-def main(lst, K):
-    original = copy.copy(lst)
-    # 要するにC>B>Aになればおけ．
-    comb = combinations_with_replacement([0, 1, 2], K)
-    for c in comb:
-        lst = copy.copy(original)
-        for i in c:
-            lst[i] *= 2
-            if lst[0] < lst[1] and lst[1] < lst[2]:
-                print('Yes')
-                exit()
-    print('No')
+def main(N, K, A):
+    for i in range(K, N): # 0 から数えるから K-1
+        this = A[i]
+        before = A[i-K]
+
+        if this > before:
+            print('Yes')
+        else:
+            print('No')
+
+
 
 if __name__ == '__main__':
-    lst = list(map(int, input().split()))
-    K = int(input())
-    main(lst, K)
+    N, K = list(map(int, input().split()))
+    A = list(map(int, input().split()))
+    main(N, K, A)
