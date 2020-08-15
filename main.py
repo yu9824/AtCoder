@@ -1,17 +1,23 @@
 # list(map(int, input().split()))
 # int(input())
 
-def main():
-    N = int(input())
-    L = sorted(list(map(int, input().split())))
+def main(X, K, D):
+    x = abs(X)
+    k = K
 
-    cnt = 0
-    for i, x in enumerate(L[:-2]):
-        for j, y in enumerate(L[i+1:-1]):
-            for z in L[i+j+2:]:
-                if len({x, y, z}) == 3:
-                    cnt += int(x + y > z)
-    print(cnt)
+    shou, amari = x // D, x % D
+    if shou >= k:   # 0付近までたどり着かないとき
+        x -= k * D
+        k = 0
+    else:
+        k -= (shou + 1)
+        x -= (shou + 1) * D
+
+    if k % 2:    # 奇数のとき
+        print(abs(x + D))
+    else:   # 偶数の時
+        print(abs(x))
 
 if __name__ == '__main__':
-    main()
+    X, K, D = list(map(int, input().split()))
+    main(X, K, D)
