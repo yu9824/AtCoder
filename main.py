@@ -1,16 +1,18 @@
 # list(map(int, input().split()))
 # int(input())
 
-def main():
-    N = input()
+def main(N, A):
+    b = A.pop(0)
 
-    s = 0
-    for n in N:
-        s += int(n)
-    if s % 9 == 0:
-        print('Yes')
-    else:
-        print('No')
+    l = 0
+    for a in A:
+        if a > b:
+            b = a
+        else:
+            l += b - a
+    print(l)
 
 if __name__ == '__main__':
-    main()
+    N = int(input())
+    A = list(map(int, input().split()))
+    main(N, A)
