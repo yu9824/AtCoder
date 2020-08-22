@@ -1,10 +1,16 @@
 # list(map(int, input().split()))
 # int(input())
-from math import ceil
 
 def main():
-    N, X, T = list(map(int, input().split()))
-    print(ceil(N / X) * T)
+    N = input()
+
+    s = 0
+    for n in N:
+        s += int(n)
+    if s % 9 == 0:
+        print('Yes')
+    else:
+        print('No')
 
 if __name__ == '__main__':
     main()
