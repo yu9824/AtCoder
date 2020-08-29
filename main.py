@@ -1,13 +1,17 @@
 # list(map(int, input().split()))
 # int(input())
 
-def main():
-    D, T, S = list(map(int, input().split()))
-    if D <= T * S:
-        print('Yes')
-    else:
-        print('No')
-
+def main(N, A):
+    div = 10 ** 9 + 7
+    s = sum(A)
+    ans = 0
+    for a in A:
+        s = s - a
+        mult = ((s % div) * a) % div
+        ans += mult
+    print(ans % div)
 
 if __name__ == '__main__':
-    main()
+    N = int(input())
+    A = list(map(int, input().split()))
+    main(N, A)
