@@ -1,17 +1,19 @@
 # list(map(int, input().split()))
 # int(input())
 
-def main(N, A):
-    div = 10 ** 9 + 7
-    s = sum(A)
-    ans = 0
-    for a in A:
-        s = s - a
-        mult = ((s % div) * a) % div
-        ans += mult
-    print(ans % div)
+def main():
+    S = input()
+    T = input()
+    # Sのi文字目をTの先頭として，それらの文字列の一致度を見る．
+
+    st = set()
+    for i in range(len(S)-len(T)+1):
+        cnt = 0
+        for s, t in zip(S[i:i+len(T)], T):
+            cnt += s == t
+        st.add(cnt)
+    print(len(T) - max(st))
+
 
 if __name__ == '__main__':
-    N = int(input())
-    A = list(map(int, input().split()))
-    main(N, A)
+    main()
