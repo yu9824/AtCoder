@@ -2,8 +2,8 @@
 # int(input())
 
 def main():
-    a, b, c, d = list(map(int, input().split()))
-    print(max(a * c, a * d, b * c, b * d))
+    x = int(input())
+    print(int(not bool(x)))
 
 if __name__ == '__main__':
     main()
