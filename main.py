@@ -4,8 +4,12 @@
 from pdb import set_trace
 
 def main():
-    A, B = list(map(int, input().split()))
-    print((A + B) // 2, (A - B) // 2)
+    S = input()
+    T = input()
+    if S == 'Y':
+        print(T.upper())
+    else:
+        print(T)
 
 if __name__ == '__main__':
     main()
