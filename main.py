@@ -1,19 +1,17 @@
 # list(map(int, input().split()))
 # int(input())
 
-from decimal import Decimal
-
-def main():
-    N = int(input())
-    X = list(map(int, input().split()))
-    abs_X = tuple(map(abs, X))
-    sqrt_X = tuple(map(lambda x:x ** 2, X))
-    m = sum(abs_X)
-    e = Decimal(str(sum(sqrt_X))) ** Decimal('0.5')
-    c = max(abs_X)
-    print(m)
-    print(e)
-    print(c)
+def main(N):
+    lower_divisors , upper_divisors = [], []
+    i = 1
+    while i*i <= N:
+        if N % i == 0:
+            lower_divisors.append(i)
+            if i != N // i:
+                upper_divisors.append(N//i)
+        i += 1
+    return lower_divisors + upper_divisors[::-1]
 
 if __name__ == '__main__':
-    main()
+    N = int(input())
+    {print(x) for x in main(N)}
