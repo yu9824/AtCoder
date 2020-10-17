@@ -1,17 +1,23 @@
 # list(map(int, input().split()))
 # int(input())
 
-def main(N):
-    lower_divisors , upper_divisors = [], []
-    i = 1
-    while i*i <= N:
-        if N % i == 0:
-            lower_divisors.append(i)
-            if i != N // i:
-                upper_divisors.append(N//i)
-        i += 1
-    return lower_divisors + upper_divisors[::-1]
+def main(*args):
+    X, Y, A, B = args   # *A, +B
+    
+    # 何回までは倍，倍にして行った方が効率がよいのかの境目を求める．
+    border = 0
+    while X < Y:
+        add = X * (A-1)
+        if add < B: # Bを加えるよりも小さくて済む場合
+            X += add
+            border += 1
+        else:
+            keikenchi = border + ((Y - 1) - X) // B
+            break
+    else:   # 途中で超えちゃったとき．
+        keikenchi = border - 1
+    print(keikenchi)
 
 if __name__ == '__main__':
-    N = int(input())
-    {print(x) for x in main(N)}
+    args = list(map(int, input().split()))
+    main(*args)
