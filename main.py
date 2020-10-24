@@ -46,36 +46,55 @@
 
 
 
-from math import log, ceil
-from decimal import Decimal, ROUND_HALF_UP
-def main(N):
-    st = {3 ** i for i in range(1, ceil(log(10 ** 18, 3)))}
-    b = ceil(log(N, 5))    # ここで不動小数点でバグり散らかしてたのでとりあえず絶対一番上の数が含まれるようにする．
+class UnionFind:
+    def __init__(self, N):
+        self.root = [n for n in range(N)]
 
-
-    while b > 0:
-        # print(b)
-        memo = N - 5 ** b
-        # if memo > 0:
-        #     a = log(memo, 3)
-        # else:
-        #     b -= 1
-            # continue
-        if memo in st:
-        # if a != 0 and a == int(a):  # 多分ここの丸めこみで死んでる．
-            a = Decimal(log(memo, 3)).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
-            print(a, b)
-            break
+    def get_root(self, x):
+        if self.root[x] == x:
+            return x
         else:
-            b -= 1
+            self.root[x] = self.get_root(self.root[x])
+            return self.root[x]
+
+    def unite(self, x, y):
+        root_x = self.get_root(x)
+        root_y = self.get_root(y)
+        if root_x != root_y:
+            self.root[root_x] = root_y
+
+def main(*args):
+    N, M, A, B, CD = args
+    uf = UnionFind(N)
+
+    for c, d in CD:
+        uf.unite(c-1, d-1)
+    groups = {}
+    for n in range(N):
+        r = uf.get_root(n)  # 完璧な根っこを取得
+        if r in groups:
+            groups[r].add(n)
+        else:
+            groups[r] = {n}
+
+    for v in groups.values():
+        sum_a = 0
+        sum_b = 0
+        for i in v:
+            sum_a += A[i]
+            sum_b += B[i]
+        if sum_a != sum_b:
+            print('No')
+            break
     else:
-        print(-1)
+        print('Yes')
 
-N = int(input())
-main(N)
+N, M = tuple(map(int, input().split()))
+A = tuple(map(int, input().split()))
+B = tuple(map(int, input().split()))
+CD = set()
+for m in range(M):
+    CD.add(tuple(map(int, input().split())))
+main(N, M, A, B, CD)
 
-# for i in range(1, 10 ** 18):
-#     if type(main(i)) == tuple:
-#         a, b = main(i)
-#         print(i, (a, b))
     
