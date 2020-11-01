@@ -58,7 +58,4 @@ if __name__ == '__main__':
     A = np.array([list(map(int, input().split())) for n in range(N)])
     args.append(A)
     main(*args)
-
-
-
     

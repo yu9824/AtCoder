@@ -16,6 +16,17 @@ class UnionFind:
         if root_x != root_y:
             self.root[root_x] = root_y
 
-    def get_group(self):
+    def get_groups(self):
         from collections import Counter
         return Counter(self.get_root(n) for n in range(len(self.root)))
+
+
+def cmb(n,r):
+    from operator import mul
+    from functools import reduce
+
+    r = min(n-r,r)
+    if r == 0: return 1
+    over = reduce(mul, range(n, n - r, -1))
+    under = reduce(mul, range(1,r + 1))
+    return over // under
