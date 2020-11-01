@@ -5,15 +5,18 @@ import sys
 sys.setrecursionlimit(10 ** 9)
 
 def main(*args):
-    N = args[0]
-    if N % 2 == 0:
-        print('White')
-    else:
-        print('Black')
+    N, AB = args
+
+    ruiseki = []
+    for a, b in AB:
+        ruiseki.extend([- ((a - 1) * a) // 2, (b * (b + 1)) // 2])
+    print(sum(ruiseki))
 
     
 
 if __name__ == '__main__':
-    args = list(map(int, input().split()))
+    N = int(input())
+    args = [N]
+    args.append([tuple(map(int, input().split())) for n in range(N)])
     main(*args)
     
