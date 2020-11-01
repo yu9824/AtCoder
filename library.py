@@ -1,5 +1,4 @@
 
-
 class UnionFind:
     def __init__(self, N):
         self.root = [n for n in range(N)]
@@ -16,3 +15,7 @@ class UnionFind:
         root_y = self.get_root(y)
         if root_x != root_y:
             self.root[root_x] = root_y
+
+    def get_group(self):
+        from collections import Counter
+        return Counter(self.get_root(n) for n in range(len(self.root)))
