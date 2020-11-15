@@ -4,15 +4,24 @@
 import sys
 sys.setrecursionlimit(10 ** 9)
 
-from decimal import Decimal
+from itertools import permutations
 
 def main(*args):
-    S = tuple(map(Decimal, args[:2]))
-    G = tuple(map(Decimal, args[2:]))
-    ans = (G[0] - S[0]) * S[1] / (G[1] + S[1]) + S[0]
-
-    print('{:.7f}'.format(ans))
+    N, K = args[:2]
+    costs = args[2:]
+    
+    ans = 0
+    for p in permutations([n for n in range(1, N)]):
+        route = [0] + list(p) + [0]
+        cost = 0
+        for n in range(N):
+            cost += costs[route[n]][route[n+1]]
+        ans += cost == K
+    print(ans)
 
 if __name__ == '__main__':
-    args = list(map(int, input().split()))
+    N, K = list(map(int, input().split()))
+    args = [N, K]
+    for n in range(N):
+        args.append(list(map(int, input().split())))
     main(*args)
