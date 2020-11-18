@@ -4,25 +4,18 @@
 import sys
 sys.setrecursionlimit(10 ** 9)
 
-import numpy as np
-from numba import njit, i8, b1
-# もらうDP
-# リストだとTLE．pypyならいけたかも．
 
+# PyPyなら通った．
+from copy import deepcopy
+# もらうDP
 mod = 10 ** 9 + 7
 
-@njit(i8(i8, i8, b1[:,:]), cache = True)
-def main(H, W, masu):
-    # H, W, masu = args
-    # dp = [[0 for w in range(W)] for h in range(H)]
-
-    dp = np.zeros((H, W), dtype = np.int64)
-    hor = np.zeros((H, W), dtype = np.int64)    # horizontal「水平方向移動」のそこまでの累積和．hor[h][w] = dp[h][w-1] + dp[h][w-2] + ...
-    ver = np.zeros((H, W), dtype = np.int64)    # vertical「垂直方向移動」のそこまでの累積和．ver[h][w] = dp[h-1][w] + dp[h-2][w] + ...
-    dia = np.zeros((H, W), dtype = np.int64)    # diagonal「斜め方向移動」のそこまでの累積和．dia[h][w] = dp[h-1][w-1] + dp[h-2][w-2] + ...
-    # hor = deepcopy(dp)  # horizontal「水平方向移動」のそこまでの累積和．hor[h][w] = dp[h][w-1] + dp[h][w-2] + ...
-    # ver = deepcopy(dp)  # vertical「垂直方向移動」のそこまでの累積和．ver[h][w] = dp[h-1][w] + dp[h-2][w] + ...
-    # dia = deepcopy(dp)  # diagonal「斜め方向移動」のそこまでの累積和．dia[h][w] = dp[h-1][w-1] + dp[h-2][w-2] + ...
+def main(*args):
+    H, W, masu = args
+    dp = [[0 for w in range(W)] for h in range(H)]
+    hor = deepcopy(dp)  # horizontal「水平方向移動」のそこまでの累積和．hor[h][w] = dp[h][w-1] + dp[h][w-2] + ...
+    ver = deepcopy(dp)  # vertical「垂直方向移動」のそこまでの累積和．ver[h][w] = dp[h-1][w] + dp[h-2][w] + ...
+    dia = deepcopy(dp)  # diagonal「斜め方向移動」のそこまでの累積和．dia[h][w] = dp[h-1][w-1] + dp[h-2][w-2] + ...
 
     # 最初の位置は1通り
     dp[0][0] = 1
@@ -40,11 +33,10 @@ def main(H, W, masu):
                     dia[h][w] %= mod
                 dp[h][w] += hor[h][w] + ver[h][w] + dia[h][w]
                 dp[h][w] %= mod
-    return dp[-1][-1]
+    print(dp[-1][-1])
 
 if __name__ == '__main__':
     H, W = list(map(int, input().split()))
     args = [H, W]
-    args.append(np.array([[s == '.' for s in input()] for h in range(H)], dtype = np.bool))
-    ans = main(*args)
-    print(ans)
+    args.append([[s == '.' for s in input()] for h in range(H)])
+    main(*args)
