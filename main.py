@@ -4,25 +4,33 @@
 import sys
 sys.setrecursionlimit(10 ** 9)
 
-from math import sqrt, ceil
+def winner(s):
+    if len(s) == 2:
+        st = set(list(s)) if type(s) == str else set(s)
+        if len(st) == 1:    # あいこ
+            return s[0]
+        elif 'R' in st and 'P' in st:
+            return 'P'
+        elif 'P' in st and 'S' in st:
+            return 'S'
+        else:
+            return 'R'
+    else:
+        raise ValueError('"' + str(s) + '"が入力されました．')
 
 def main(*args):
-    n = args[0]
+    n, k, s = args
 
-    # 長さn + 1の丸太を買うことで何本 (i本) 節約できるかを計算．
-    s = lambda x: x * (x + 1) // 2  # 総和求める関数
-    
-    # iを全部やってるとめっちゃ時間かかるのであたりをつける．
-    i = ceil(sqrt(2 * (n + 1)))
-    while s(i) >= n + 1:
-        i -= 1
-    
-    # n+1の長さの丸太から，小さいほうからi本のマルタを作ることができる（捨ててOKなので)
-    ans = n - i + 1
-    print(ans)
+    # 解説通り脳死
+    s = list(s)
+    for i in range(k):
+        s *= 2
+        for j in range(n):
+            s[j] = winner(s[2*j:2*(j+1)])
+        s = s[:n]
+    print(s[0])
     
 
 if __name__ == '__main__':
-    args = [int(input())]
+    args = list(map(int, input().split())) + [input()]
     main(*args)
-    
