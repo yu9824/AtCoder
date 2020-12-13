@@ -4,37 +4,33 @@
 import sys
 sys.setrecursionlimit(10 ** 9)
 
-from copy import copy
-from math import ceil
 
-
+# 解説通り
+# 読んでも何言ってるか何もわからん．
 def main(*args):
-    N, M, A = args
+    N, M, A, B = args
 
-    if M == 0:  # なかったら
-        print(1)
-    else:   # 青が一個でも
-        # Aのそれぞれの間(A_bet)のリストを求めるための下準備．(python式index)
-        copy_A = copy(sorted(A))
-        copy_A.insert(0, -1)
-        copy_A.append(N)
+    dp = [[-1 for m in range(M+1)] for n in range(N+1)]
 
-        # Aのそれぞれの間(A_bet)のリストを求める
-        A_bet = [copy_A[i] - copy_A[i-1] - 1 for i in range(1, M+2) if copy_A[i] - copy_A[i-1] - 1 > 0] # それらを含まない '間' なので -1 をする．
-        # print(A_bet)  # デバッグ用
+    for n in range(N+1):
+        for m in range(M+1):
+            if n == 0:
+                dp[n][m] = m
+            elif m == 0:
+                dp[n][m] = n
+            else:
+                '''
+                A[n-1]を消すとき (xが1増える)
+                B[m-1]を消すとき (xが1増える)
+                どちらも消さず，A_prime[-1] = A[n-1], B_prime[-1] = B[m-1]になるようにするしかない．(yはA[n-1]とB[m-1]が一致しているかどうかに依存して増加しうる．xは増加し得ない．)
+                '''
+                dp[n][m] = min(dp[n-1][m] + 1, dp[n][m-1] + 1, dp[n-1][m-1] + (A[n-1] != B[m-1]))
+    print(dp[-1][-1])
 
-        # 幅のうち0以外で一番小さな値を選択する場合が一番賢い．
-        if len(A_bet) == 0: # 一個も白の場所がない場合
-            print(0)
-        else:
-            k = min(A_bet)
-            cnt = 0
-            for diff in A_bet:
-                cnt += ceil(diff / k)
-            print(cnt)
     
 
 if __name__ == '__main__':
     args = list(map(int, input().split()))
-    args.append(list(map(lambda x:int(x)-1, input().split())))  # python式のindexに直す．
+    args.append(list(map(int, input().split())))
+    args.append(list(map(int, input().split())))
     main(*args)
