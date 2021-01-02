@@ -107,3 +107,8 @@ def cmb(n,r):
     over = reduce(mul, range(n, n - r, -1))
     under = reduce(mul, range(1,r + 1))
     return over // under
+
+def argsort(seq, reverse = False):
+    # http://stackoverflow.com/questions/3071415/efficient-method-to-calculate-the-rank-vector-of-a-list-in-python
+    # https://stackoverflow.com/questions/3382352/equivalent-of-numpy-argsort-in-basic-python
+    return sorted(range(len(seq)), key=seq.__getitem__, reverse = reverse)
