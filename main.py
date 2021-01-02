@@ -3,21 +3,29 @@ def I(): return int(input())
 
 import sys
 sys.setrecursionlimit(10 ** 9)
-from itertools import combinations
-
 
 def main(*args):
-    N, XY = args
+    N, S = args
 
-    cnt = 0
-    for (x1, y1), (x2, y2) in combinations(XY, 2):
-        slope = (y2 - y1) / (x2 - x1)
-        cnt += -1 <= slope <= 1
-    print(cnt)
+    st = set()
+    for s in S:
+        if s not in st:
+            if '!' in s:
+                st.add(s[1:])
+            else:
+                st.add(s)
+        else:
+            if '!' in s:
+                print(s[1:])
+            else:
+                print(s)
+            break
+    else:
+        print('satisfiable')
 
 
 if __name__ == '__main__':
     N = int(input())
     args = [N]
-    args.append([LI() for n in range(N)])
+    args.append({input() for n in range(N)})
     main(*args)
