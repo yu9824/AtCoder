@@ -112,3 +112,16 @@ def argsort(seq, reverse = False):
     # http://stackoverflow.com/questions/3071415/efficient-method-to-calculate-the-rank-vector-of-a-list-in-python
     # https://stackoverflow.com/questions/3382352/equivalent-of-numpy-argsort-in-basic-python
     return sorted(range(len(seq)), key=seq.__getitem__, reverse = reverse)
+
+class Node:
+    def __init__(self, node_id):
+        self.parent = -1
+        self.children = []
+        self.depth = 0
+        self.node_id = node_id
+        self.c = 0
+
+    def update(self, parent_node):
+        self.depth = parent_node.depth + 1
+        parent_node.children.append(self.node_id)
+        self.parent = parent_node.node_id
