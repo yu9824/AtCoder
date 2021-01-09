@@ -1,52 +1,66 @@
 def LI(): return list(map(int, input().split()))
-def I(): return int(input())
 
 import sys
 sys.setrecursionlimit(10 ** 9)
+from collections import deque
 
-'''
-青木派でsortして上から順番に寝返り？
-得失点差でsortして上から順番に寝返り？
-'''
+
 def main(*args):
-    N, AB = args
+    N, AB, Q, TEX = args
 
-    # aoki = []
-    # takahashi = []
-    
-    # for a, b in AB:
-    #     takahashi.append(a+b)
-    #     aoki.append(a)
-
-    # 得失点差を求める
-    # tokushittenn = [t + a for t, a in zip(takahashi, aoki)]
-
-
-    # 得失点差を求める
-    tokushittenn = []
-    aoki = 0
+    connects = [set() for n in range(N)]
+    C = [0 for n in range(N)]
     for a, b in AB:
-        tokushittenn.append(a + b + a)
-        aoki += a
-    # print(aoki, tokushittenn)
+        connects[a-1].add(b-1)
+        connects[b-1].add(a-1)
+    
+    depths = [-1 if n != 0 else 0 for n in range(N)]
+    que = deque([0])
+    
+    while que:
+        at = que.pop()
+        for i in connects[at]:
+            if depths[i] == -1:
+                depths[i] = depths[at] + 1
+                que.append(i)
 
-    # 得失点順を降順に並べ替えて，その順番に演説していく（効果的な街の順番）
-    for i, city in enumerate(argsort(tokushittenn, reverse = True)):
-        aoki -= tokushittenn[city]
-        if aoki < 0:
-            print(i+1)
-            break
-        
+    C = [0 for n in range(N)] 
+    for t, e, x in TEX:
+        a, b = AB[e-1]
+        a -= 1
+        b -= 1
+        if depths[a] > depths[b]:
+            a, b = b, a
 
-def argsort(seq, reverse = False):
-    # http://stackoverflow.com/questions/3071415/efficient-method-to-calculate-the-rank-vector-of-a-list-in-python
-    # https://stackoverflow.com/questions/3382352/equivalent-of-numpy-argsort-in-basic-python
-    return sorted(range(len(seq)), key=seq.__getitem__, reverse = reverse)
+        if t == 1:
+            '''
+            aから辿ってbを通らないすべて
+            '''
+            C[0] += x
+            C[b] -= x
+        else:   # t == 2
+            '''
+            bから辿ってaを通らないすべて
+            '''
+            C[b] += x
+
+    que = deque([0])
+    while que:
+        at = que.pop()
+        for i in connects[at]:
+            if depths[at] < depths[i]:
+                C[i] += C[at]
+                que.append(i)
+    
+    {print(i) for i in C}
 
 
 
 if __name__ == '__main__':
     N = int(input())
     args = [N]
-    args.append([LI() for n in range(N)])
+    args.append([LI() for n in range(N-1)])
+    Q = int(input())
+    args.append(Q)
+    args.append([LI() for q in range(Q)])
     main(*args)
