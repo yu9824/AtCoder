@@ -5,14 +5,18 @@ sys.setrecursionlimit(10 ** 9)
 
 
 def main(*args):
-    A = min(args)
-    B = max(args)
-    if A + 3 > B:
-        print('Yes')
-    else:
-        print('No')
+    N, A, B = args
 
+    x = 0
+    for a, b in zip(A, B):
+        x += a * b
+    if x:
+        print('No')
+    else:
+        print('Yes')
 
 if __name__ == '__main__':
-    args = LI()
+    args = [int(input())]
+    for _ in range(2):
+        args.append(LI())
     main(*args)
