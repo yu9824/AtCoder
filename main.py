@@ -5,18 +5,17 @@ sys.setrecursionlimit(10 ** 9)
 
 
 def main(*args):
-    N, A, B = args
+    N, A = args
 
-    x = 0
-    for a, b in zip(A, B):
-        x += a * b
-    if x:
-        print('No')
-    else:
-        print('Yes')
+    half = 2 ** (N-1)
+
+    kessho = max(A[:half]), max(A[half:])
+    print(A.index(min(kessho)) + 1)
+
+    
+    
 
 if __name__ == '__main__':
     args = [int(input())]
-    for _ in range(2):
-        args.append(LI())
+    args.append(LI())
     main(*args)
