@@ -3,37 +3,36 @@ def LI(): return list(map(int, input().split()))
 import sys
 sys.setrecursionlimit(10 ** 9)
 
+from collections import Counter
+
 def main(*args):
-    N, S = args
+    N, K, A = args
 
-    # Trueとなる通り数．Xのindexで指定
-    def reculsive(n):
-        '''
-        n: 何番目．1-index
-        '''
-        if n == 0:
-            return 1
-        oper = S[n-1]
-        if oper == 'OR':
-            '''
-            x_nがTrue: 0 ~ (n-1)がTrue，FalseなんでもOK → 2 ** n
-            x_nがFalse: Trueじゃなきゃいけないのでreculsive(n-1)
-            '''
-            return 2 ** n + reculsive(n-1)
-        else:   # oper == 'AND'
-            '''
-            x_nがTrue: Trueじゃなきゃいけないのでreculsive(n-1)
-            x_nがFalse: 絶対無理．0．
-            '''
-            return reculsive(n-1)
+    c = Counter(A)
+    max_A = max(c)  # 辞書のmaxはkeyの最大値を返すのでこれでOK
 
-    print(reculsive(N))
+    # 捨てずに残っている箱の数
+    k = K
+    
+    cnt = 0
+    # 最大値+1までやれば最大値をとってもなお消えない箱を消してすべての箱の値を足し算することが可能．
+    for i in range(max_A+2):
+        if k > c[i]:
+            # iが書かれたボールの数
+            x = c[i]
+
+            # 何個箱を捨てるか
+            diff = k - x
+            cnt += diff * i
+
+            # kの更新
+            k = x
+    print(cnt)
 
     
 
 if __name__ == '__main__':
-    N = int(input())
-    args = [N]
-    args.append([input() for n in range(N)])
+    args = LI()
+    args.append(LI())
 
     main(*args)
