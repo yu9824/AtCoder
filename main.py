@@ -9,25 +9,35 @@ def main(*args):
     N, K, A = args
 
     c = Counter(A)
-    max_A = max(c)  # 辞書のmaxはkeyの最大値を返すのでこれでOK
+    max_A = max(c)
 
-    # 捨てずに残っている箱の数
-    k = K
-    
-    cnt = 0
-    # 最大値+1までやれば最大値をとってもなお消えない箱を消してすべての箱の値を足し算することが可能．
-    for i in range(max_A+2):
-        if k > c[i]:
-            # iが書かれたボールの数
-            x = c[i]
+    def reculsive(i = 0, k = K):
+        '''
+        iを入れられない箱を取り除いていく．
 
-            # 何個箱を捨てるか
+        i: 着目しているボールの数（小さい方から順番に行く）
+        k: まだ除かれず，残っている箱の数
+        '''
+        
+        # x: iが書かれたボールの個数
+        x = c[i] if i in c else 0
+
+        # 何個の箱がここで削除されたか．
+        if k > x:   # 箱が削除されるならば
+            # 削除された箱の数を求める．
             diff = k - x
-            cnt += diff * i
-
             # kの更新
             k = x
-    print(cnt)
+        else:
+            diff = 0
+
+        if i == max_A:    # 最大値をとってもなお箱が残っていたら
+            return diff * i + k * (i+1)
+        else:
+            # ここで消えた箱の分だけ足す．→ここで消えた = i-1の数までのボールが入ってる = 箱にはiが表示されるものがdiff個存在
+            return diff * i + reculsive(i+1, k)
+
+    print(reculsive())
 
     
 
