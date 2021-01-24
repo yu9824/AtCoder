@@ -3,46 +3,38 @@ def LI(): return list(map(int, input().split()))
 import sys
 sys.setrecursionlimit(10 ** 9)
 
-from collections import Counter
+# imos法じゃ計算量的に解けないと気づくかどうか，それに対して工夫ができるかどうかがミソだった気がする．
 
+# 解説通り
+# https://atcoder.jp/contests/abc188/editorial/346
 def main(*args):
-    N, K, A = args
+    N, C, ABC = args
 
-    c = Counter(A)
-    max_A = max(c)
+    # イベントを分解してc_i円かかるイベントがa_i日に起きる，c_i円安くなるイベントがb_i+1日に起きるというふうに考え，日付ごとにソート．（日付の左端を基準に考える．）
+    event = []
+    for a, b, c in ABC:
+        event.extend([[a-1, c], [b, -c]])   # 0-indexに変換
+    event.sort(key = lambda x:x[0])
 
-    def reculsive(i = 0, k = K):
-        '''
-        iを入れられない箱を取り除いていく．
+    # 前回値段が変更された日付を保存しておくやつ
+    the_day_before = 0
+    # 今までにかかったコスト
+    total_cost = 0
+    # 現在1日あたりかかるコスト
+    cost = 0
+    # 値段が変更された瞬間，その前日までの費用を計算してtotal_costに加える．
+    for day, diff_cost in event:
+        if day != the_day_before:
+            total_cost += (day - the_day_before) * min(C, cost)
+            the_day_before = day
+        cost += diff_cost
 
-        i: 着目しているボールの数（小さい方から順番に行く）
-        k: まだ除かれず，残っている箱の数
-        '''
-        
-        # x: iが書かれたボールの個数
-        x = c[i] if i in c else 0
+    print(total_cost)
 
-        # 何個の箱がここで削除されたか．
-        if k > x:   # 箱が削除されるならば
-            # 削除された箱の数を求める．
-            diff = k - x
-            # kの更新
-            k = x
-        else:
-            diff = 0
-
-        if i == max_A:    # 最大値をとってもなお箱が残っていたら
-            return diff * i + k * (i+1)
-        else:
-            # ここで消えた箱の分だけ足す．→ここで消えた = i-1の数までのボールが入ってる = 箱にはiが表示されるものがdiff個存在
-            return diff * i + reculsive(i+1, k)
-
-    print(reculsive())
-
-    
 
 if __name__ == '__main__':
-    args = LI()
-    args.append(LI())
+    N, C = LI()
+    args = [N, C]
+    args.append([LI() for n in range(N)])
 
     main(*args)
