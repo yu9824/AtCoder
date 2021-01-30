@@ -6,20 +6,17 @@ sys.setrecursionlimit(10 ** 9)
 from math import ceil
 
 def main(*args):
-    A, B, C = args
-    if C:
-        if B > A:
-            ans = 'Aoki'
-        else:
-            ans = 'Takahashi'
+    N, S, D, XY = args
+    for x, y in XY:
+        if x < S and y > D:
+            print('Yes')
+            break
     else:
-        if A > B:
-            ans = 'Takahashi'
-        else:
-            ans = 'Aoki'
-    print(ans)
+        print('No')
 
 if __name__ == '__main__':
-    args = LI()
+    N, S, D = LI()
+    args = [N, S, D]
+    args.append([LI() for n in range(N)])
 
     main(*args)
