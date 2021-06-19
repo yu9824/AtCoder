@@ -18,28 +18,31 @@ sys.setrecursionlimit(10 ** 9)
 '''
 
 # https://atcoder.jp/contests/typical90/tasks/typical90_a
+# 参考: https://qiita.com/kotaaaa/items/6d53d44c9ae11db10985
 
 from math import ceil
 
 def main(*args):
     N, L, K, A = args
 
-    low = 0
-    high = ceil(L / (K+1))
-
-    while high - low > 1:
-        mid = (low + high) // 2
+    def boolean(mid):
         cnt = 0 # 何個切れ目を入れたかのカウント
         x = 0
         for i in range(N):
-            if A[i] - x >= mid:
-                cnt += 1
+            if A[i] - x >= mid and L - A[i] > mid:  # 今まで切った部品も，今切って残ってる部分も両方条件を満たす時．
+                cnt += 1    # 切る
                 x = A[i]
-        if cnt >= K and L - x >= mid:   # 最後の最後も条件を満たしていれば 
+        return cnt >= K
+
+    # 以下は典型的な二分探索構文
+    low = 0
+    high = ceil(L / (K+1))
+    while high - low > 1:
+        mid = (low + high) // 2
+        if boolean(mid):
             low = mid
-        else:   # cnt < K
+        else:
             high = mid
-        print(high, low)
     print(mid)
 
             
