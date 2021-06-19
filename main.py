@@ -25,13 +25,13 @@ from math import ceil
 def main(*args):
     N, L, K, A = args
 
-    def boolean(mid):
+    def boolean(mid):   # 指定通り切れた，もしくは指定以上に細かく切れた時はTrueを返す
         cnt = 0 # 何個切れ目を入れたかのカウント
         x = 0
-        for i in range(N):
-            if A[i] - x >= mid and L - A[i] >= mid:  # 今まで切った部品も，今切って残ってる部分も両方条件を満たす時．
+        for a in A:
+            if a - x >= mid and L - a >= mid:  # 今まで切った部品も，今切って残ってる部分も両方条件を満たすとき．
                 cnt += 1    # 切る
-                x = A[i]    # 切れ目の更新
+                x = a   # 切れ目の更新
         return cnt >= K
 
     # 以下は典型的な二分探索構文
@@ -43,11 +43,7 @@ def main(*args):
             low = mid
         else:
             high = mid
-    print(mid)
-
-            
-                
-            
+    print(low)  # ←ここがmidになってたのが間違えのもと
 
 
 if __name__ == '__main__':
