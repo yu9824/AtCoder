@@ -29,9 +29,9 @@ def main(*args):
         cnt = 0 # 何個切れ目を入れたかのカウント
         x = 0
         for i in range(N):
-            if A[i] - x >= mid and L - A[i] > mid:  # 今まで切った部品も，今切って残ってる部分も両方条件を満たす時．
+            if A[i] - x >= mid and L - A[i] >= mid:  # 今まで切った部品も，今切って残ってる部分も両方条件を満たす時．
                 cnt += 1    # 切る
-                x = A[i]
+                x = A[i]    # 切れ目の更新
         return cnt >= K
 
     # 以下は典型的な二分探索構文
