@@ -15,6 +15,9 @@ sys.setrecursionlimit(10 ** 9)
 # 答えで二分探索 がキーワード
 「後ろからと前からL/(K+1)より小さく切れるところで切っていった結果を比較すればいける？」の考え方が惜しかった．この閾値を可変にして二分探索すればできた．
 算数みたいに答えを直接答えを出すことにこだわってしまったが，そうとは限らないということか．
+
+「最小値の最大化」は二分探索でとけることが多いそう．
+O(N logL)
 '''
 
 # https://atcoder.jp/contests/typical90/tasks/typical90_a
@@ -36,7 +39,7 @@ def main(*args):
 
     # 以下は典型的な二分探索構文
     low = 0
-    high = ceil(L / (K+1))
+    high = ceil(L/(K+1)) + 1    # +1を忘れるとエラーになる．
     while high - low > 1:
         mid = (low + high) // 2
         if boolean(mid):
