@@ -44,10 +44,10 @@ def main(*args):
     N, AB = args
     from collections import defaultdict
     # 隣接リスト
-    graph = defaultdict(list)
+    graph = [[-1 for n in range(N)] for n in range(N)]
     for a, b in AB:
-        graph[a].append(b)
-        graph[b].append(a)
+        graph[a][b] = 1
+        graph[b][a] = 1
 
     dijkstra = Dijkstra(graph, s=Dijkstra(graph=graph).goal_node)
     ans = dijkstra.get_radius(g=dijkstra.goal_node)
@@ -57,11 +57,19 @@ def main(*args):
 
 class Dijkstra:
     def __init__(self, graph, s=0):    
+        """graphには隣接行列を前提（コスト）
+
+        Parameters
+        ----------
+        graph : 2D list
+            Adjacency matrix representing an undirected graph.
+            It takes the form of a square matrix with -1 being the place where there is no path.
+        s : int, optional
+            start node, by default 0
+        """
         import heapq
         N = len(graph)
         INF = 2**32
-        cost = 1
-        
         self.total_costs = [INF for n in range(N)]
         
         self.start_node = s
@@ -73,7 +81,9 @@ class Dijkstra:
 
         while que:
             total_cost, current_node = heapq.heappop(que)
-            for next_node in graph[current_node]:
+            for next_node, cost in enumerate(graph[current_node]):
+                if cost < 0 :     # すでに訪れていた場合もしくはcostが0未満だった(辺がない)場合
+                    continue
                 # より少ないコストでそのノードにいける場合
                 if self.total_costs[next_node] > total_cost + cost:
                     # コストを更新
