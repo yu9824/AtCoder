@@ -24,7 +24,7 @@ def main(*args):
     sum_W = [(sum(list(zip(*A))[w])) for w in range(W)] # sum(list(*A))でtranspose()している．
     sum_H = [sum(A[h]) for h in range(H)]
     
-    [print(' '.join([str(sum_W[w] + sum_H[h] - A[h][w]) for w in range(W)])) for h in range(H)]
+    [print(*[str(sum_W[w] + sum_H[h] - A[h][w]) for w in range(W)]) for h in range(H)]
     
 
 if __name__ == '__main__':
