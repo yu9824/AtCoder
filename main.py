@@ -5,25 +5,45 @@ sys.setrecursionlimit(10 ** 9)
 
 '''
 # 思ったこと
-n回操作すると
-水色: LB = A + n * B
-赤色: R = n * C
-
-なりたいもの
-D * R >= LB
-D * n * C >= A + n * B
-n * (C * D - B) >= A
+累積和かなぁ．いもす法っぽい．
 '''
 
-from math import ceil
 def main(*args):
-    A, B, C, D = args
-    if C * D - B <= 0:
-        print(-1)
-    else:
-        print(ceil(A / (C * D - B)))
+    N, T, L, R = args
+    max_R = max(R)
+    imos = [0 for _ in range(max_R+1)]
+    for t, l, r in zip(T, L, R):
+        if t == 1:  # []
+            imos[l-1] += 1
+            imos[r] -= 1
+        elif t == 2:    # [)
+            imos[l-1] += 1
+            imos[r-1] -= 1
+        elif t == 3:    # (]
+            imos[l] += 1
+            imos[r] -= 1
+        elif t == 4:
+            imos[l] += 1
+            imos[r-1] -= 1
+
+    ruiseki = [0 for _ in range(max_R+1)]
+    ruiseki[0] = imos[0]
+    for i in range(1, max_R+1):
+        ruiseki[i] = ruiseki[i-1] + imos[i]
+    print(ruiseki, max(ruiseki))
+
+    
+
 
 if __name__ == '__main__':
-    args = LI()
-    main(*args)
+    N = int(input())
+    T = []
+    L = []
+    R = []
+    for n in range(N):
+        t, l, r = LI()
+        T.append(t)
+        L.append(l)
+        R.append(r)
+    main(N, T, L, R)
 
