@@ -6,31 +6,40 @@ sys.setrecursionlimit(10 ** 9)
 '''
 # 思ったこと
 累積和かなぁ．いもす法っぽい．
+→TLEとれず．
+
+コンテスト終了後．
+問題文の意味を取り間違えていた．最大個数重なっているときは何個なのかを聞かれているかと思ったが，単純に共通区間の数え上げだった．
+
+閉区間，開区間をわかりやすく変換して数え上げして終わり．
+> 2つの閉区間[a, b], [c, d]が共通部分を持つかの判定はmax(a, c) ≤ min(b, d)
+
+imos法だと，O(N + 10**9)で無理なのには気づいたけど，問題文を読み違えていたからまずむずかしい．
+
+PyPy: 346 ms
+Python: 887 ms
 '''
 
 def main(*args):
     N, T, L, R = args
-    max_R = max(R)
-    imos = [0 for _ in range(max_R+1)]
-    for t, l, r in zip(T, L, R):
+    for i in range(N):
+        t = T[i]
         if t == 1:  # []
-            imos[l-1] += 1
-            imos[r] -= 1
+            pass
         elif t == 2:    # [)
-            imos[l-1] += 1
-            imos[r-1] -= 1
+            R[i] -= 0.5
         elif t == 3:    # (]
-            imos[l] += 1
-            imos[r] -= 1
-        elif t == 4:
-            imos[l] += 1
-            imos[r-1] -= 1
+            L[i] += 0.5
+        elif t == 4:    # ()
+            R[i] -= 0.5
+            L[i] += 0.5
 
-    ruiseki = [0 for _ in range(max_R+1)]
-    ruiseki[0] = imos[0]
-    for i in range(1, max_R+1):
-        ruiseki[i] = ruiseki[i-1] + imos[i]
-    print(ruiseki, max(ruiseki))
+    ans = 0
+    for i in range(N-1):
+        for j in range(i+1, N):
+            if max(L[i], L[j]) <= min(R[i], R[j]):
+                ans += 1
+    print(ans)
 
     
 
