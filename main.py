@@ -8,51 +8,37 @@ sys.setrecursionlimit(10 ** 9)
 累積和かなぁ．いもす法っぽい．
 →TLEとれず．
 
-コンテスト終了後．
-問題文の意味を取り間違えていた．最大個数重なっているときは何個なのかを聞かれているかと思ったが，単純に共通区間の数え上げだった．
+累積和かな？→できた！
+Python: 593 ms
+PyPy: 439 ms
 
-閉区間，開区間をわかりやすく変換して数え上げして終わり．
-> 2つの閉区間[a, b], [c, d]が共通部分を持つかの判定はmax(a, c) ≤ min(b, d)
-
-imos法だと，O(N + 10**9)で無理なのには気づいたけど，問題文を読み違えていたからまずむずかしい．
-
-PyPy: 346 ms
-Python: 887 ms
+解説: https://twitter.com/e869120/status/1380652465834532865
 '''
 
+# https://atcoder.jp/contests/typical90/tasks/typical90_j
+
+
 def main(*args):
-    N, T, L, R = args
-    for i in range(N):
-        t = T[i]
-        if t == 1:  # []
-            pass
-        elif t == 2:    # [)
-            R[i] -= 0.5
-        elif t == 3:    # (]
-            L[i] += 0.5
-        elif t == 4:    # ()
-            R[i] -= 0.5
-            L[i] += 0.5
+    N, CP, Q, LR = args
+    ruiseki = [[0 for n in range(N+1)] for _ in range(2)]
+    # 初期条件
+    c1, p1 = CP[0]
+    ruiseki[c1-1][1] = p1 # ruisekiは1-indexにしたほうが都合が良いので．
+    for i in range(2, N+1): # 1-index
+        c, p = CP[i-1]  # CPは0-index
+        
+        # 1-index to 0-index
+        c -= 1
 
-    ans = 0
-    for i in range(N-1):
-        for j in range(i+1, N):
-            if max(L[i], L[j]) <= min(R[i], R[j]):
-                ans += 1
-    print(ans)
-
+        ruiseki[c][i] = ruiseki[c][i-1] + p
+        ruiseki[c^1][i] = ruiseki[c^1][i-1] # c^1で0と1を反転させてる
     
-
+    {print(*[ruiseki[c][r] - ruiseki[c][l-1] for c in range(2)]) for l, r in LR}
 
 if __name__ == '__main__':
     N = int(input())
-    T = []
-    L = []
-    R = []
-    for n in range(N):
-        t, l, r = LI()
-        T.append(t)
-        L.append(l)
-        R.append(r)
-    main(N, T, L, R)
+    CP = [LI() for n in range(N)]
+    Q = int(input())
+    LR = [LI() for q in range(Q)]
+    main(N, CP, Q, LR)
 
