@@ -4,7 +4,7 @@ class UnionFind:
         '''
         N: 要素の数．
         '''
-        self.root = [n for n in range(N)]
+        self.root = list(range(N))
 
     def get_root(self, x):
         '''
@@ -28,13 +28,15 @@ class UnionFind:
         if root_x != root_y:
             self.root[root_x] = root_y
 
+    def is_same(self, x, y):
+        return self.get_root(x) == self.get_root(y)
+
     def get_groups(self):
         '''
         根をkey, 集合をvalueとしたgroupを返す．
         '''
         from collections import Counter
         return Counter(self.get_root(n) for n in range(len(self.root)))
-
 
 # 参考: https://qiita.com/takayg1/items/c811bd07c21923d7ec69
 # 単位元 と 結合法則 (交換則は成り立たなくてOK) が必要! それらがあれば O(N)→O(log N) にできる．)
