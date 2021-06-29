@@ -128,19 +128,6 @@ class Node:
         parent_node.children.append(self.node_id)
         self.parent = parent_node.node_id
 
-<<<<<<< HEAD
-# 約数列挙
-def make_divisors(n):
-    lower_divisors , upper_divisors = [], []
-    i = 1
-    while i*i <= n:
-        if n % i == 0:
-            lower_divisors.append(i)
-            if i != n // i:
-                upper_divisors.append(n//i)
-        i += 1
-    return lower_divisors + upper_divisors[::-1]
-=======
 # 隣接行列の場合
 class Dijkstra:
     def __init__(self, graph, s=0):
@@ -291,4 +278,3 @@ class Dijkstra:
         else:
             route.append(previous_node)
         return route[::-1]
->>>>>>> 1690b5236e04998c6a0638543eba0895616d1591
