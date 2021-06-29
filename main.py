@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 def LI(): return list(map(int, input().split()))
 
 import sys
@@ -23,3 +24,5 @@ def main(*args):
 if __name__ == '__main__':
     args = list(map(Decimal, input().split()))
     main(*args)
+=======
+>>>>>>> 1690b5236e04998c6a0638543eba0895616d1591

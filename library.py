@@ -4,7 +4,7 @@ class UnionFind:
         '''
         N: 要素の数．
         '''
-        self.root = [n for n in range(N)]
+        self.root = list(range(N))
 
     def get_root(self, x):
         '''
@@ -28,13 +28,15 @@ class UnionFind:
         if root_x != root_y:
             self.root[root_x] = root_y
 
+    def is_same(self, x, y):
+        return self.get_root(x) == self.get_root(y)
+
     def get_groups(self):
         '''
         根をkey, 集合をvalueとしたgroupを返す．
         '''
         from collections import Counter
         return Counter(self.get_root(n) for n in range(len(self.root)))
-
 
 # 参考: https://qiita.com/takayg1/items/c811bd07c21923d7ec69
 # 単位元 と 結合法則 (交換則は成り立たなくてOK) が必要! それらがあれば O(N)→O(log N) にできる．)
@@ -126,6 +128,7 @@ class Node:
         parent_node.children.append(self.node_id)
         self.parent = parent_node.node_id
 
+<<<<<<< HEAD
 # 約数列挙
 def make_divisors(n):
     lower_divisors , upper_divisors = [], []
@@ -137,3 +140,155 @@ def make_divisors(n):
                 upper_divisors.append(n//i)
         i += 1
     return lower_divisors + upper_divisors[::-1]
+=======
+# 隣接行列の場合
+class Dijkstra:
+    def __init__(self, graph, s=0):
+        """graphには隣接行列を前提（コスト）
+
+        Parameters
+        ----------
+        graph : 2D list
+            Adjacency matrix representing an undirected graph.
+            It takes the form of a square matrix with -1 being the place where there is no path.
+        s : int, optional
+            start node, by default 0
+        """
+        import heapq
+        N = len(graph)
+        INF = 2**32
+        self.total_costs = [INF for n in range(N)]
+        
+        self.start_node = s
+        self.d_route = {}
+
+        que = []    # (total_cost, current_node)
+        heapq.heappush(que, (0, self.start_node))
+        self.total_costs[self.start_node] = 0
+
+        while que:
+            total_cost, current_node = heapq.heappop(que)
+            for next_node, cost in enumerate(graph[current_node]):
+                if cost < 0 :     # すでに訪れていた場合もしくはcostが0未満だった(辺がない)場合
+                    continue
+                # より少ないコストでそのノードにいける場合
+                if self.total_costs[next_node] > total_cost + cost:
+                    # コストを更新
+                    self.total_costs[next_node] = total_cost + cost
+                    # 最短距離を更新するノードの記録
+                    self.d_route[next_node] = current_node  # ゴールから辿るため，この形．
+                    # queに追加
+                    heapq.heappush(que, (total_cost + cost, next_node))
+        self.goal_node = current_node
+
+    def get_radius(self, g):
+        """[summary]
+
+        Parameters
+        ----------
+        g : int
+            goal node.
+        """
+        # 初期化
+        r = 0
+        previous_node = g
+        while previous_node in self.d_route or previous_node != self.start_node:
+            r += 1
+            previous_node = self.d_route[previous_node]
+        else:
+            r += 1
+        return r
+
+    def get_route(self, g):
+        """[summary]
+
+        Parameters
+        ----------
+        g : int
+            goal node.
+        """
+        route = []
+        # 初期化
+        previous_node = g
+        while previous_node in self.d_route or previous_node != self.start_node:
+            route.append(previous_node)
+            previous_node = self.d_route[previous_node]
+        else:
+            route.append(previous_node)
+        return route[::-1]
+
+# 隣接リストの場合
+class Dijkstra:
+    def __init__(self, graph, s=0):
+        """graphには隣接リストを前提（コスト）
+
+        Parameters
+        ----------
+        graph : 2D list
+            Adjacent list representing an undirected graph.
+        s : int, optional
+            start node, by default 0
+        """
+        import heapq
+        N = len(graph)
+        INF = 2**32
+        cost = 1
+        
+        self.total_costs = [INF for n in range(N)]
+        
+        self.start_node = s
+        self.d_route = {}
+
+        que = []    # (total_cost, current_node)
+        heapq.heappush(que, (0, self.start_node))
+        self.total_costs[self.start_node] = 0
+
+        while que:
+            total_cost, current_node = heapq.heappop(que)
+            for next_node in graph[current_node]:
+                # より少ないコストでそのノードにいける場合
+                if self.total_costs[next_node] > total_cost + cost:
+                    # コストを更新
+                    self.total_costs[next_node] = total_cost + cost
+                    # 最短距離を更新するノードの記録
+                    self.d_route[next_node] = current_node  # ゴールから辿るため，この形．
+                    # queに追加
+                    heapq.heappush(que, (total_cost + cost, next_node))
+        self.goal_node = current_node
+
+    def get_radius(self, g):
+        """[summary]
+
+        Parameters
+        ----------
+        g : int
+            goal node.
+        """
+        # 初期化
+        r = 0
+        previous_node = g
+        while previous_node in self.d_route or previous_node != self.start_node:
+            r += 1
+            previous_node = self.d_route[previous_node]
+        else:
+            r += 1
+        return r
+
+    def get_route(self, g):
+        """[summary]
+
+        Parameters
+        ----------
+        g : int
+            goal node.
+        """
+        route = []
+        # 初期化
+        previous_node = g
+        while previous_node in self.d_route or previous_node != self.start_node:
+            route.append(previous_node)
+            previous_node = self.d_route[previous_node]
+        else:
+            route.append(previous_node)
+        return route[::-1]
+>>>>>>> 1690b5236e04998c6a0638543eba0895616d1591
