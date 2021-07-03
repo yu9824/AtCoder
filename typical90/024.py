@@ -9,6 +9,12 @@ K10**9だけど全探索で該当するものを選ぶってのはできるか�
 
 いや，普通に絶対値の引き算するだけで良いのでは？
 それでdiff < Kかつ (K - diff) % 2 == 0 (打ち消し合う動作で無駄に回数を消費できる)だったらいける？
+→diff < Kじゃなくて diff <= Kだった...
+
+PyPy: 66 ms
+Python: 27 ms
+
+解説: https://twitter.com/e869120/status/1386814047081746432
 '''
 
 # https://atcoder.jp/contests/typical90/tasks/typical90_x
@@ -18,7 +24,7 @@ def main(*args):
     diff = 0
     for a, b in zip(A, B):
         diff += abs(a-b) 
-    if K > diff and (K - diff) % 2 == 0:
+    if K >= diff and (K - diff) % 2 == 0:
         print('Yes')
     else:
         print('No')
