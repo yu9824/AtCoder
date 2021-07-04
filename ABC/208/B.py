@@ -8,8 +8,11 @@ sys.setrecursionlimit(10 ** 9)
 
 '''
 
+# https://atcoder.jp/contests/abc208/tasks/abc208_b
+
 def main(*args):
-    a, b, c = args
+    P, = args
+    print(P)
 
 if __name__ == '__main__':
-    main(*LI())
+    main(int(input()))
