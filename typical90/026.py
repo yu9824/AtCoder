@@ -23,7 +23,8 @@ UnionFindではできないな．
 そもそも問題文を二色の彩色問題に読み替えることが自分にはできないので解説をすぐみて正解．
 
 正直そもそも解けるようになる気もあまりしない．
-二部グラフについて: https://ocw.hokudai.ac.jp/wp-content/uploads/2016/01/GraphTheory-2007-Note-03.pdf
+
+計算量O(N)で解けるらしい．
 '''
 
 # https://atcoder.jp/contests/typical90/tasks/typical90_z
@@ -31,88 +32,21 @@ UnionFindではできないな．
 def main(*args):
     N, AB = args
     # 隣接リスト
-    lst = [[] for n in range(N)]
+    graph = [[] for n in range(N)]
     for a, b in AB:
         a -= 1
         b -= 1
-        lst[a].append(b)
-        lst[b].append(a)
-    dijkstra = Dijkstra(lst)
-    print(dijkstra.goal_node)
+        graph[a].append(b)
+        graph[b].append(a)
 
-class Dijkstra:
-    def __init__(self, graph, s=0):
-        """graphには隣接リストを前提（コスト）
-
-        Parameters
-        ----------
-        graph : 2D list
-            Adjacent list representing an undirected graph.
-        s : int, optional
-            start node, by default 0
-        """
-        import heapq
-        N = len(graph)
-        INF = 2**32
-        cost = 1
-        
-        self.total_costs = [INF for n in range(N)]
-        
-        self.start_node = s
-        self.d_route = {}
-
-        que = []    # (total_cost, current_node)
-        heapq.heappush(que, (0, self.start_node))
-        self.total_costs[self.start_node] = 0
-
-        while que:
-            total_cost, current_node = heapq.heappop(que)
-            for next_node in graph[current_node]:
-                # より少ないコストでそのノードにいける場合
-                if self.total_costs[next_node] > total_cost + cost:
-                    # コストを更新
-                    self.total_costs[next_node] = total_cost + cost
-                    # 最短距離を更新するノードの記録
-                    self.d_route[next_node] = current_node  # ゴールから辿るため，この形．
-                    # queに追加
-                    heapq.heappush(que, (total_cost + cost, next_node))
-        self.goal_node = current_node
-
-    def get_radius(self, g):
-        """[summary]
-
-        Parameters
-        ----------
-        g : int
-            goal node.
-        """
-        # 初期化
-        r = 0
-        previous_node = g
-        while previous_node in self.d_route or previous_node != self.start_node:
-            r += 1
-            previous_node = self.d_route[previous_node]
-        else:
-            r += 1
-        return r
-
-    def get_route(self, g):
-        """[summary]
-
-        Parameters
-        ----------
-        g : int
-            goal node.
-        """
-        route = []
-        # 初期化
-        previous_node = g
-        while previous_node in self.d_route or previous_node != self.start_node:
-            route.append(previous_node)
-            previous_node = self.d_route[previous_node]
-        else:
-            route.append(previous_node)
-        return route[::-1]
+# 0, 1の二色で塗り分け．
+# colors[x]がその色を表す
+from collections import deque
+cand = deque([0])
+while cand:
+    pos = cand.pop()
+    colors[pos]
+    
 
 
 if __name__ == '__main__':
