@@ -4,3 +4,6 @@
 
 # AtCoder
 This is my answer for [AtCoder](https://atcoder.jp) contest.
+
+## LICENSE
+This work, including the program, is protected by the [MIT license](LICENSE).
