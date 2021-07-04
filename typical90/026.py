@@ -25,6 +25,13 @@ UnionFindではできないな．
 正直そもそも解けるようになる気もあまりしない．
 
 計算量O(N)で解けるらしい．
+DFSは一回リフレッシュしたら書けた．
+0-indexにしたのを1-indexにするのを忘れるなど，細かい実装ミスが発生した．
+
+再帰関数の方をやってみても練習になるかも．
+
+Python: 373ms
+PyPy: 284ms
 '''
 
 # https://atcoder.jp/contests/typical90/tasks/typical90_z
@@ -39,15 +46,26 @@ def main(*args):
         graph[a].append(b)
         graph[b].append(a)
 
-# 0, 1の二色で塗り分け．
-# colors[x]がその色を表す
-from collections import deque
-cand = deque([0])
-while cand:
-    pos = cand.pop()
-    colors[pos]
-    
+    # 0, 1の二色で塗り分け．
+    groups = [[], []] # color0のグループとcolor1のグループ
+    already = [False for n in range(N)] # 色をすでに塗ったか否か
+    from collections import deque
+    cand = deque([(0, 0)])  # (position, color)
+    while cand:
+        # 今着目してるノード
+        position, color = cand.pop()
+        already[position] = True
 
+        # 次に見て欲しいノード
+        for next_position in graph[position]:
+            if not already[next_position]:
+                cand.append((next_position, color^1))    # ^1で0を1に，1を0にできる．
+
+        groups[color].append(position)
+    
+    get_ans = lambda y:' '.join(list(map(lambda x:str(x+1), y))[0:N//2])
+    ans = get_ans(groups[0]) if len(groups[0]) >= N//2 else get_ans(groups[1])
+    print(ans)
 
 if __name__ == '__main__':
     N = int(input())
