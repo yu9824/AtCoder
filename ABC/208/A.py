@@ -8,8 +8,14 @@ sys.setrecursionlimit(10 ** 9)
 
 '''
 
+# https://atcoder.jp/contests/abc208/tasks/abc208_a
+
 def main(*args):
-    a, b, c = args
+    a, b = args
+    if 6 * a >= b >= a:
+        print('Yes')
+    else:
+        print('No')
 
 if __name__ == '__main__':
     main(*LI())
