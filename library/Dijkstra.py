@@ -14,9 +14,9 @@ class Dijkstra:
             start node, by default 0
         """
         import heapq
-        N = len(graph)
-        INF = 2**32
-        self.total_costs = [INF for n in range(N)]
+        V = len(graph)
+        self.INF = 2**32
+        self.total_costs = [self.INF for v in range(V)]
         
         self.start_node = s
         self.d_route = {}
@@ -89,11 +89,11 @@ class Dijkstra:
             start node, by default 0
         """
         import heapq
-        N = len(graph)
-        INF = 2**32
+        V = len(graph)
+        self.INF = 2**32
         cost = 1
         
-        self.total_costs = [INF for n in range(N)]
+        self.total_costs = [self.INF for v in range(V)]
         
         self.start_node = s
         self.d_route = {}
