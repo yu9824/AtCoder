@@ -1,7 +1,7 @@
 
 
 class WarshallFloyd:
-    def __init__(self, graph, INF = 2**32):
+    def __init__(self, graph, INF=2 ** 32):
         """graphには隣接行列を前提（コスト）
 
         Parameters
@@ -14,13 +14,11 @@ class WarshallFloyd:
         INF : int, optional
             infinity
         """
-        self.graph = graph
-        V = len(self.graph)
+        V = len(graph)
         self.INF = INF
-        self.total_costs = [self.INF for v in range(V)]
+        self.total_costs = graph
 
         for k in range(V):
             for s in range(V):
                 for t in range(V):
-                    self.graph[s][t] = min(graph[s][t], graph[s][k] + graph[k][t])
-        
+                    self.total_costs[s][t] = min(self.total_costs[s][t], self.total_costs[s][k] + self.total_costs[k][t])
