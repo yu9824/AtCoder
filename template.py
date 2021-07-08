@@ -9,7 +9,8 @@ sys.setrecursionlimit(10 ** 9)
 '''
 
 def main(*args):
-    a, b, c = args
+    A, B, C = args
 
 if __name__ == '__main__':
+    N = int(input())
     main(*LI())
