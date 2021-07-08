@@ -19,6 +19,11 @@ sys.setrecursionlimit(10 ** 9)
 よく考えるとなぜか当たったというよりはimos法のサイトは何度かみているので，なんとなく見覚えがあったのかもしれない．
 
 imos法原著サイト: https://imoz.jp/algorithms/imos_method.html
+
+1-indexを0-indexに変換する部分だけ間違っていたらしい．なぜなのか．
+→ 普通に原点使ったりするからだわ．もともと0-indexだったということか．制約が0≤x≤1000だし．-1が出てきてバグった．
+PyPy: 301 ms
+Python: 743 ms
 '''
 
 # https://atcoder.jp/contests/typical90/tasks/typical90_ab
@@ -31,7 +36,10 @@ def main(*args):
     # 二次元の累積和用
     tiles = [[0 for _ in range(W+1)] for __ in range(H+1)]  # 最後の-1がはみ出る可能性があるから．
     for n in range(N):
-        lx, ly, rx, ry = map(lambda x:x-1, lst[n])  # 1-index to 0-index
+        # lx, ly, rx, ry = map(lambda x:x-1, lst[n])  # 1-index to 0-index
+        lx, ly, rx, ry = lst[n] # ここだけだったみたいなのだが，なぜなのかまったくわからない．
+        # →普通に原点使ったりするからだわ．もともと0-indexだったということか．制約が0≤x≤1000だし．
+
         # 対角線で和差を揃える．
         tiles[ly][lx] += 1
         tiles[ry][lx] -= 1
