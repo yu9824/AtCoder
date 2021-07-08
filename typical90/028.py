@@ -40,13 +40,13 @@ def main(*args):
 
     # 横方向の累積和
     for h in range(H):
-        for w in range(1, W):
-            tiles[h][w] += tiles[h][w-1]
+        for w in range(W):
+            tiles[h][w+1] += tiles[h][w]
     
     # 縦方向の累積和
-    for h in range(1, H):
+    for h in range(H):
         for w in range(W):
-            tiles[h][w] += tiles[h-1][w]
+            tiles[h+1][w] += tiles[h][w]
 
     # answer
     counta = [0 for n in range(N+1)]
