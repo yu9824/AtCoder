@@ -39,14 +39,14 @@ def main(*args):
         tiles[ry][rx] += 1
 
     # 横方向の累積和
-    for w in range(W):
-        for h in range(H):
-            tiles[h][w+1] += tiles[h][w]
+    for h in range(H):
+        for w in range(1, W):
+            tiles[h][w] += tiles[h][w-1]
     
     # 縦方向の累積和
-    for h in range(H):
+    for h in range(1, H):
         for w in range(W):
-            tiles[h+1][w] += tiles[h][w]
+            tiles[h][w] += tiles[h-1][w]
 
     # answer
     counta = [0 for n in range(N+1)]
