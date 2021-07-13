@@ -27,6 +27,15 @@ $O(n^2)$ → $O(n \mathrm{log}\ n)$
   - 広義単調増加関数．
 
 参考: [しゃくとり法 (尺取り法) の解説と、それを用いる問題のまとめ - Qiita](https://qiita.com/drken/items/ecd1a472d3a0e7db8dce)
+
+
+結局参考コードのやり方をまるパクリ（自分で書いたけど）することになった．
+長さを求める部分を何回もやると重いっぽい．だからあえて，それを外の整数の変数で持っておくことで高速化できた．
+
+この考え方はよく使いそう．
+
+Python: 110 ms
+PyPy: 116 ms
 '''
 
 # https://atcoder.jp/contests/typical90/tasks/typical90_ah
@@ -38,19 +47,37 @@ def main(*args):
     lx = 0
     la = A[lx]
     que = deque([la])
+    len_que = 1
     ans = 0
+    d_num = {
+        la:1
+    }   # 何が何個入っているか
+    kinds = 1   # 何種類の数字？
 
     rx = 1
     while rx < N:
         ra = A[rx]
-        que.append(ra)
-        cnt = 0
-        while len(set(que)) > K:
-            la = que.popleft()
-            cnt += 1
+
+        if ra in d_num:
+            d_num[ra] += 1
         else:
-            lx += cnt
-            ans = max(ans, rx-lx+1)
+            kinds += 1
+            d_num[ra] = 1
+        
+        que.append(ra)
+        len_que += 1
+        
+        # TLEはおそらくlen(set(que))のせいな気がする．→数の種類に関する変数を別にを持っておこう．
+        # while len(set(que)) > K:
+        while kinds > K:
+            la = que.popleft()
+            len_que -= 1
+            if d_num[la] == 1:  # 最後の一個ならば
+                kinds -= 1
+                d_num.pop(la)
+            else:
+                d_num[la] -= 1
+        ans = max(ans, len_que)
         rx += 1
     print(ans)
 
