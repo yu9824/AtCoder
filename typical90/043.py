@@ -13,6 +13,9 @@ DP?
 - これまで曲がった回数
 - これまでどういう方向で進んできたか．
 - 今回はどう進む関係なのか．
+
+渡すDPを書いたがTLE & WA
+PyPy: 17AC 6WA 5TLE
 '''
 
 # https://atcoder.jp/contests/typical90/tasks/typical90_aq
@@ -22,54 +25,36 @@ from collections import deque
 def main(*args):
     H, W, rs, cs, rt, ct, S = args
     dp = [[INF] * W for h in range(H)]
-    visited = [[False]*W for h in range(H)]
 
     OK = '.'
     NG = '#'
     lst_direction = ((1, 0), (0, 1), (-1, 0), (0, -1))
 
-    def get_candidate(x, y, direction_pre = -1):
+    def get_candidate(x, y):
         for direction, (k, l) in enumerate(lst_direction):
-            y_next = y+k
-            x_next = x+l
-            if 0 <= y_next < H and 0 <= x_next < W:
-                yield ((y_next, x_next), direction, direction_pre)
+            y_cand = y+k
+            x_cand = x+l
+            if 0 <= y_cand < H and 0 <= x_cand < W:
+                yield ((x_cand, y_cand), direction)
 
     dp[rs][cs] = 0
-    visited[rs][cs] = True
-    # [(i, j), direction, direction_pre]
-    # direction: lst_directionに示されたもののうちどの方角か．どれでもないときは-1．(i-1,j-1)から(i,j)にいくとき．
-    # straight: 前回からの方角．(i-2,j-2)から(i-1,j-1)にいくとき
-    que = deque([[(rs, cs), -1, -1]])
+    # [(i, j), direction_pre]
+    # direction_pre: lst_directionに示されたもののうちどの方角か．どれでもないときは-1．(i-1,j-1)から(i,j)にいくとき．
+    que = deque([[(cs, rs), -1]])
     while que:
-        (y, x), direction, direction_pre = que.popleft()
-        if S[y][x] == OK:   # 道ならば
-            y_pre = y - lst_direction[direction][0]
-            x_pre = x - lst_direction[direction][1]
-            if direction_pre == -1 or direction == direction_pre: # 直進してきた場合
-                cost = dp[y][x]
-                cost_cand = dp[y_pre][x_pre]    # そのままの値を代入
-                if cost > cost_cand:    # 更新できるならば
-                    dp[y][x] = cost_cand
-                else:
-                    continue    # 次の候補を追加せず戻る
-            else:   # 曲がることになった場合
-                cost = dp[y][x]
-                cost_cand = dp[y_pre][x_pre] + 1    # 曲がった回数を追加
-                if cost > cost_cand:    # 更新できるならば
-                    dp[y][x] = cost_cand    # 更新
-                else:
-                    continue    # 次の候補を追加せず戻る
-            # 次の候補を追加
-            for args in get_candidate(x, y, direction_pre=direction):
-                que.append(args)
-                print(que)
-
+        # print(que)
+        (x, y), direction_pre = que.popleft()
+        for (x_cand, y_cand), direction in get_candidate(x, y):
+            if S[y_cand][x_cand] == OK: # 道ならば
+                if direction_pre == -1 or direction_pre == direction:   # 直進してきた場合
+                    cost = dp[y][x]
+                else:   # 曲がる必要がある場合
+                    cost = dp[y][x] + 1
+                cost_cand = dp[y_cand][x_cand]
+                if cost_cand >= cost:   # 更新できるならば
+                    dp[y_cand][x_cand] = cost
+                    que.append([(x_cand, y_cand), direction])
     print(dp[rt][ct])
-    
-
-
-
 
 
 if __name__ == '__main__':
