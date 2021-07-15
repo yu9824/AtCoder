@@ -16,6 +16,14 @@ DP?
 
 渡すDPを書いたがTLE & WA
 PyPy: 17AC 6WA 5TLE
+
+限界なので，解説を見る．
+解説: https://twitter.com/e869120/status/1394787605099601923
+
+popleftを使ったりしていて，BFSなのは正解でそれはよかった．（最短経路はBFSって感じらしい．）
+自分のやつのどこが重たいのか，どこが間違っているのかはわからない．
+
+dpに方向性という概念を与えてあげるとよかったらしい．
 '''
 
 # https://atcoder.jp/contests/typical90/tasks/typical90_aq
@@ -24,46 +32,41 @@ from collections import deque
 
 def main(*args):
     H, W, rs, cs, rt, ct, S = args
-    dp = [[INF] * W for h in range(H)]
+
+    lst_direction = ((1, 0), (0, 1), (-1, 0), (0, -1))
+    dp = [[[INF] * len(lst_direction) for w in range(W)] for h in range(H)] # 方向という概念を持たせる．
 
     OK = '.'
     NG = '#'
 
-    def get_candidate(x, y, direction_pre = -1):
-        lst_direction = ((1, 0), (0, 1), (-1, 0), (0, -1))
-        pairs = ({1, 3}, {0, 2})    # 互いに打ち消し合うので絶対続かない．
-        
-        exclude = set()
-        for pair in pairs:
-            if direction_pre in pair:
-                exclude = {direction_pre} & pair
-                break
-        lst = []
-        for direction, (k, l) in enumerate(lst_direction):
-            x_cand = x + k
-            y_cand = y + l
-            if 0 <= x_cand < H and 0 <= y_cand < W and direction not in exclude:
-                lst.append(((x_cand, y_cand), direction))
-        return lst
+    def get_candidate(x, y, direction):
+        dx, dy = lst_direction[direction]
+        x_cand = x + dx
+        y_cand = y + dy
+        return x_cand, y_cand
 
-    dp[rs][cs] = 0
-    # [(i, j), direction_pre]
-    # direction_pre: lst_directionに示されたもののうちどの方角か．どれでもないときは-1．(i-1,j-1)から(i,j)にいくとき．
-    que = deque([[(rs, cs), -1]])
+    def is_available(x, y):
+        return 0 <= x < H and 0 <= y < W and S[x][y] == OK
+
+    # 初期化
+    que = deque()
+    for direction in range(len(lst_direction)):
+        dp[rs][cs][direction] = 0
+        que.append([(rs, cs), direction])
+
     while que:
-        # print(que)
-        (x, y), direction_pre = que.popleft()
-        for (x_cand, y_cand), direction in get_candidate(x, y):
-            if S[x_cand][y_cand] == OK: # 道ならば
-                if direction_pre == -1 or direction_pre == direction:   # 直進してきた場合
-                    cost = dp[x][y]
-                else:   # 曲がる必要がある場合
-                    cost = dp[x][y] + 1
-                cost_cand = dp[x_cand][y_cand]
-                if cost_cand >= cost:   # 更新できるならば
-                    dp[x_cand][y_cand] = cost
-                    que.append([(x_cand, y_cand), direction])
-    print(dp[rt][ct])
+        (x, y), direction = que.popleft()
+        x_cand, y_cand = get_candidate(x, y, direction)
+        if is_available(x_cand, y_cand):
+            cost_cand = dp[x_cand][y_cand][direction]
+            cost = dp[x][y][direction]
+            if cost <= cost_cand:
+                dp[x_cand][y_cand][direction] = cost
+                for direction_cand in range(len(lst_direction)):
+                    if direction_cand != direction:
+                        dp[x_cand][y_cand][direction_cand] = cost + 1
+                    que.append([(x_cand, y_cand), direction_cand])
+    print(min(dp[rt][ct]))
 
 
 if __name__ == '__main__':
